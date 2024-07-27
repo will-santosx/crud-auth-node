@@ -26,6 +26,18 @@ export const getNotes = async (req: _Request, res: Response) => {
   }
 };
 
+export const getNoteByID = async (req: _Request, res: Response) => {
+  const authorId = req.user;
+  const { id } = req.params;
+
+  try {
+    const note = await prisma.note.findUnique({ where: { id: Number(id) } });
+    res.json(note);
+  } catch (error) {
+    res.status(400).json({ error: "Failed to fetch note" });
+  }
+};
+
 export const updateNote = async (req: _Request, res: Response) => {
   const { id } = req.params;
   const { title, content, color } = req.body;
